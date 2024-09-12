@@ -57,7 +57,6 @@ erDiagram
     AUTHORS ||--o{ COMMENTS: "makes"
     AUTHORS ||--o{ LIKES: "likes"
     POSTS ||--o{ LIKES: "liked_by"
-    COMMENTS ||--o{ LIKES: "liked_by"
     AUTHORS ||--o{ FOLLOWS: "follows"
     AUTHORS ||--o{ FOLLOWS : "followed_by"
     GROUPS ||--o{ GROUP_MEMBERS: "has"
