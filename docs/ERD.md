@@ -1,34 +1,65 @@
-# Entity Relationship Diagram
-
 ```mermaid
 erDiagram
     %% Define Entities and Their Attributes
-    USERS {
-      int UserID PK
+    AUTHORS {
+      int ID PK
       string Username
       string Email
       string Password
       datetime CreatedAt
+      bool isActive
     }
     
     POSTS {
-      int PostID PK
+      int ID PK
       int UserID FK
       string Content
       datetime CreatedAt
     }
     
     COMMENTS {
-      int CommentID PK
+      int ID PK
       int PostID FK
       int UserID FK
       string Content
       datetime CreatedAt
     }
     
-    %% Define Relationships
-    USERS ||--o{ POSTS: "creates"
-    POSTS ||--o{ COMMENTS: "has"
-    USERS ||--o{ COMMENTS: "makes"
+    LIKES {
+      int ID PK
+      int UserID FK
+      int PostID FK
+      datetime CreatedAt
+    }
+    
+    GROUPS {
+      int ID PK
+      string GroupName
+      string Description
+      datetime CreatedAt
+    }
 
+    GROUP_MEMBERS {
+      int GroupID FK
+      int UserID FK
+      datetime JoinedAt
+    }
+
+    FOLLOWS {
+      int FollowerUserID FK
+      int FollowedUserID FK
+      datetime CreatedAt
+    }
+    
+    %% Define Relationships
+    AUTHORS ||--o{ POSTS: "creates"
+    POSTS ||--o{ COMMENTS: "has"
+    AUTHORS ||--o{ COMMENTS: "makes"
+    AUTHORS ||--o{ LIKES: "likes"
+    POSTS ||--o{ LIKES: "liked_by"
+    COMMENTS ||--o{ LIKES: "liked_by"
+    AUTHORS ||--o{ FOLLOWS: "follows"
+    AUTHORS ||--o{ FOLLOWS : "followed_by"
+    GROUPS ||--o{ GROUP_MEMBERS: "has"
+    AUTHORS ||--o{ GROUP_MEMBERS: "joined"
 ```
