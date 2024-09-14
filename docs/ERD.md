@@ -36,7 +36,7 @@ erDiagram
       datetime CreatedAt
     }
 
-    FOLLOWS {
+    FRIENDSHIPS {
       int User2ID FK
       int User1ID FK
       datetime CreatedAt
@@ -56,8 +56,7 @@ erDiagram
     AUTHORS ||--o{ COMMENTS: "makes"
     AUTHORS ||--o{ LIKES: "likes"
     POSTS ||--o{ LIKES: "liked_by"
-    AUTHORS ||--o{ FOLLOWS: "follows"
-    AUTHORS ||--o{ FOLLOWS : "followed_by"
+    AUTHORS ||--o{ FRIENDSHIPS: "is a friend of"
     COMMENTS ||--o{ REPLIES: "has"
 ```
 
