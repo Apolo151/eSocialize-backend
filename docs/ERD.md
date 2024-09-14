@@ -3,6 +3,8 @@ erDiagram
     %% Define Entities and Their Attributes
     AUTHORS {
       int ID PK
+      string Bio
+      binary profile_picture
       string Username
       string Email
       string Password
@@ -13,6 +15,8 @@ erDiagram
     POSTS {
       int ID PK
       int UserID FK
+      post_status status
+      binary image
       string Content
       datetime CreatedAt
     }
@@ -24,6 +28,19 @@ erDiagram
       string Content
       datetime CreatedAt
     }
+
+    REPLIES {
+      int ID PK
+      int CommentID FK
+      string Content
+      datetime CreatedAt
+    }
+
+    FOLLOWS {
+      int User2ID FK
+      int User1ID FK
+      datetime CreatedAt
+    }
     
     LIKES {
       int ID PK
@@ -32,7 +49,19 @@ erDiagram
       datetime CreatedAt
     }
     
-    GROUPS {
+    
+    %% Define Relationships
+    AUTHORS ||--o{ POSTS: "creates"
+    POSTS ||--o{ COMMENTS: "has"
+    AUTHORS ||--o{ COMMENTS: "makes"
+    AUTHORS ||--o{ LIKES: "likes"
+    POSTS ||--o{ LIKES: "liked_by"
+    AUTHORS ||--o{ FOLLOWS: "follows"
+    AUTHORS ||--o{ FOLLOWS : "followed_by"
+    COMMENTS ||--o{ REPLIES: "has"
+```
+
+<!--     <!-- GROUPS {
       int ID PK
       string GroupName
       string Description
@@ -43,22 +72,4 @@ erDiagram
       int GroupID FK
       int UserID FK
       datetime JoinedAt
-    }
-
-    FOLLOWS {
-      int FollowerUserID FK
-      int FollowedUserID FK
-      datetime CreatedAt
-    }
-    
-    %% Define Relationships
-    AUTHORS ||--o{ POSTS: "creates"
-    POSTS ||--o{ COMMENTS: "has"
-    AUTHORS ||--o{ COMMENTS: "makes"
-    AUTHORS ||--o{ LIKES: "likes"
-    POSTS ||--o{ LIKES: "liked_by"
-    AUTHORS ||--o{ FOLLOWS: "follows"
-    AUTHORS ||--o{ FOLLOWS : "followed_by"
-    GROUPS ||--o{ GROUP_MEMBERS: "has"
-    AUTHORS ||--o{ GROUP_MEMBERS: "joined"
-```
+    } --> -->
