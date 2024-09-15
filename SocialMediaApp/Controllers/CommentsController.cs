@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Models;
@@ -15,6 +16,7 @@ namespace SocialMediaApp.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult AddComment([FromBody] CreateCommentViewModel model)
         {
@@ -36,6 +38,8 @@ namespace SocialMediaApp.Controllers
             _context.SaveChanges();
             return Ok();
         }
+
+        [Authorize]
         [HttpGet]
         public ActionResult GetComments(int postId)
         {
@@ -54,6 +58,8 @@ namespace SocialMediaApp.Controllers
             _context.SaveChanges();
             return Ok();
         }
+
+        [Authorize]
         [HttpPut]
         public ActionResult EditComment([FromBody] EditCommentViewModel model)
         {

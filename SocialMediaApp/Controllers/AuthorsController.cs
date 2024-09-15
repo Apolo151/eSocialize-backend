@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Models;
 using SocialMediaApp.ViewModels;
+using SocialMediaApp.Controllers;
 
 namespace SocialMediaApp.Controllers
 {
@@ -53,7 +54,7 @@ namespace SocialMediaApp.Controllers
 				UserName = model.UserName,
 				Email = model.Email,
 				// TODO: handle null possibility
-				Password = model.Password.GetHashCode().ToString(),
+				Password = AuthController.ComputeSha256Hash(model.Password),
 				Bio = model.Bio,
 				ProfilePicture = model.ProfilePicture
 			};

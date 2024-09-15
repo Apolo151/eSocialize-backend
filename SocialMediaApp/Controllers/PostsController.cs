@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Models;
@@ -19,7 +20,7 @@ namespace SocialMediaApp.Controllers
             _context = context;
         }
 
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<PostViewModel>>> GetAll()
         {
@@ -40,6 +41,7 @@ namespace SocialMediaApp.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpGet("Author/{authorId}")]
         public async Task<ActionResult<List<PostViewModel>>> GetAll(int authorId)
         {
@@ -64,6 +66,7 @@ namespace SocialMediaApp.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreatePostViewModel model)
         {
@@ -80,6 +83,7 @@ namespace SocialMediaApp.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpGet("{Id}")]
         public async Task<ActionResult<PostViewModel>> GetPostById([FromRoute] int Id)
         {
@@ -99,7 +103,7 @@ namespace SocialMediaApp.Controllers
             return Ok(result);
         }
 
-
+        [Authorize]
         [HttpDelete("{Id}")]
         public async Task<ActionResult> Delete([FromRoute] int Id)
         {
@@ -109,6 +113,7 @@ namespace SocialMediaApp.Controllers
         }
 
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] PostViewModel updatedPost)
         {

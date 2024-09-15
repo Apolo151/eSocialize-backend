@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Models;
@@ -15,6 +16,7 @@ namespace SocialMediaApp.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult AddLike([FromBody] CreateLikeViewModel model)
         {
@@ -35,6 +37,7 @@ namespace SocialMediaApp.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult GetLikes(int postId)
         {
@@ -42,6 +45,7 @@ namespace SocialMediaApp.Controllers
             return Ok(likes);
         }
 
+        [Authorize]
         [HttpDelete]
         public ActionResult DeleteLike(int likeId)
         {
