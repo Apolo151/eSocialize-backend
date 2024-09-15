@@ -46,14 +46,16 @@ namespace SocialMediaApp.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> Create([FromBody] AuthorViewModel model)
+		public async Task<ActionResult> Create([FromBody] CreateAuthorViewModel model)
 		{
 			var newAuthor = new Author
 			{
 				UserName = model.UserName,
 				Email = model.Email,
 				// TODO: handle null possibility
-				Password = model.Password?.GetHashCode().ToString()
+				Password = model.Password.GetHashCode().ToString(),
+				Bio = model.Bio,
+				ProfilePicture = model.ProfilePicture
 			};
 
 			_context.Authors.Add(newAuthor);
