@@ -7,10 +7,11 @@ namespace SocialMediaApp.Models
 	{
 		public int Id { get; set; }
 		public int PostId { get; set; }
-		public Post Post { get; set; }
-        public int AuthorId { get; set; }
-        public Author Author { get; set; }
-        public DateTime CreatedAt { get; set; }
+		public Post? Post { get; set; }
+        public int LikerId { get; set; }
+        public Author? Liker { get; set; }
+        
+		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     }
 }

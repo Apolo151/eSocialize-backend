@@ -1,4 +1,7 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SocialMediaApp;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,12 +14,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add JWT Bearer Authentication
-var jwtOptions = builder.Configuration.GetSection("Jwt");
+var jwtOptions = builder.Configuration.GetSection("Jwt").Get<SocialMediaApp.Models.JwtOptions>();
+builder.Services.AddSingleton(jwtOptions);
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
-        options.saveToken = true;
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidIssuer = jwtOptions.Issuer,

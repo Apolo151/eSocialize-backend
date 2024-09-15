@@ -29,7 +29,7 @@ namespace SocialMediaApp.Controllers
               
                 PostId = model.PostId,
                 Content = model.Content,
-                AuthorId = model.AuthorId
+                CommenterId = model.CommenterId
             };
 
            _context.Comments.Add(newComment);
@@ -39,7 +39,7 @@ namespace SocialMediaApp.Controllers
         [HttpGet]
         public ActionResult GetComments(int postId)
         {
-            var comments = _context.Comments.Include(c => c.Author).Where(c => c.PostId == postId).ToList();
+            var comments = _context.Comments.Include(c => c.Commenter).Where(c => c.PostId == postId).ToList();
             return Ok(comments);
         }
         [HttpDelete]

@@ -27,7 +27,7 @@ namespace SocialMediaApp.Controllers
             var newLike = new Like
             {
                 PostId = model.PostId,
-                AuthorId = model.AuthorId
+                LikerId = model.LikerId
             };
 
             _context.Likes.Add(newLike);
@@ -38,7 +38,7 @@ namespace SocialMediaApp.Controllers
         [HttpGet]
         public ActionResult GetLikes(int postId)
         {
-            var likes = _context.Likes.Include(l => l.Author).Where(l => l.PostId == postId).ToList();
+            var likes = _context.Likes.Include(l => l.Liker).Where(l => l.PostId == postId).ToList();
             return Ok(likes);
         }
 

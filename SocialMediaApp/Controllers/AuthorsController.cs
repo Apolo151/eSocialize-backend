@@ -22,7 +22,11 @@ namespace SocialMediaApp.Controllers
 			var result = await _context.Authors.Select(a => new AuthorViewModel
 			{
 				Id = a.Id,
-				Name = a.Name
+				UserName = a.UserName,
+				Email = a.Email,
+				Bio = a.Bio,
+				ProfilePicture = a.ProfilePicture
+
 			}).ToListAsync();
 
 			return Ok(result);
@@ -46,7 +50,10 @@ namespace SocialMediaApp.Controllers
 		{
 			var newAuthor = new Author
 			{
-				Name = model.Name
+				UserName = model.UserName,
+				Email = model.Email,
+				// TODO: handle null possibility
+				Password = model.Password?.GetHashCode().ToString()
 			};
 
 			_context.Authors.Add(newAuthor);

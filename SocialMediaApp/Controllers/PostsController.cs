@@ -31,7 +31,7 @@ namespace SocialMediaApp.Controllers
                 Author = new AuthorViewModel()
                 {
                     Id = p.Author.Id,
-                    Name = p.Author.Name
+                    UserName = p.Author.UserName
                 },
                 Comments = p.Comments.Select(p => p.Content).ToList()
             }).ToListAsync();
@@ -55,7 +55,7 @@ namespace SocialMediaApp.Controllers
                     Author = new AuthorViewModel()
                     {
                         Id = p.Author.Id,
-                        Name = p.Author.Name
+                        UserName = p.Author.UserName
                     },
                     Comments = p.Comments.Select(p => p.Content).ToList()
                 }).ToListAsync();
@@ -91,7 +91,7 @@ namespace SocialMediaApp.Controllers
                 Author = new AuthorViewModel()
                 {
                     Id = p.Author.Id,
-                    Name = p.Author.Name
+                    UserName = p.Author.UserName
                 },
                 Comments = p.Comments.Select(p => p.Content).ToList()
             }).FirstOrDefaultAsync();
