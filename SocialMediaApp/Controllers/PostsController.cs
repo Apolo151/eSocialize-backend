@@ -26,19 +26,37 @@ namespace SocialMediaApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PostViewModel>>> GetAll()
         {
-            var result = await _context.Posts.Include(p => p.Author).Include(p => p.Comments).Select(p => new PostViewModel()
-            {
-                Id = p.Id,
-                Title = p.Title,
-                Content = p.Content,
-                Author = new AuthorViewModel()
-                {
-                    Id = p.Author.Id,
-                    UserName = p.Author.UserName
-                },
-                Comments = p.Comments.Select(p => p.Content).ToList()
-            }).ToListAsync();
+            // Assuming you have a method to get the current user's followed authors
+            var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var followedAuthorIds = await _context.Follows
+                .Where(f => f.FollowerId == int.Parse(currentUserId))
+                .Select(f => f.FolloweeId)
+                .ToListAsync();
 
+            var result = await _context.Posts
+                .Include(p => p.Author)
+                .Include(p => p.Comments)
+                .Select(p => new PostViewModel()
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Content = p.Content,
+                    Author = new AuthorViewModel()
+                    {
+                        Id = p.Author.Id,
+                        UserName = p.Author.UserName
+                    },
+                   Comments = p.Comments.Select(c => new CommentViewModel
+                    {
+                        Id = c.Id,
+                        Content = c.Content,
+                        CommenterId = c.CommenterId,
+                        CommenterName = c.Commenter.UserName,
+                    }).ToList(),
+                    IsFollowedAuthor = followedAuthorIds.Contains(p.Author.Id)
+                })
+                .OrderByDescending(p => p.IsFollowedAuthor) // Order by followed authors first
+                .ToListAsync();
 
             return Ok(result);
         }
@@ -61,7 +79,13 @@ namespace SocialMediaApp.Controllers
                         Id = p.Author.Id,
                         UserName = p.Author.UserName
                     },
-                    Comments = p.Comments.Select(p => p.Content).ToList()
+                    Comments = p.Comments.Select(c => new CommentViewModel
+                    {
+                        Id = c.Id,
+                        Content = c.Content,
+                        CommenterId = c.CommenterId,
+                        CommenterName = c.Commenter.UserName,
+                    }).ToList()
                 }).ToListAsync();
 
 
@@ -106,7 +130,13 @@ namespace SocialMediaApp.Controllers
                     Id = p.Author.Id,
                     UserName = p.Author.UserName
                 },
-                Comments = p.Comments.Select(p => p.Content).ToList()
+                Comments = p.Comments.Select(c => new CommentViewModel
+                    {
+                        Id = c.Id,
+                        Content = c.Content,
+                        CommenterId = c.CommenterId,
+                        CommenterName = c.Commenter.UserName,
+                    }).ToList(),
             }).FirstOrDefaultAsync();
 
             return Ok(result);

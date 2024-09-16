@@ -11,7 +11,9 @@ namespace SocialMediaApp.ViewModels
         public DateTime CreatedAt { get; set; }
         
         public AuthorViewModel? Author { get; set; }
-        public List<String>? Comments { get; set; }
+        public List<CommentViewModel>? Comments { get; set; }
         public List<String>? Likes { get; set; }
+
+        public bool? IsFollowedAuthor { get; set; }
     }
 }
