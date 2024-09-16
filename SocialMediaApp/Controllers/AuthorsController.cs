@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Models;
 using SocialMediaApp.ViewModels;
+using SocialMediaApp.Controllers;
 
 namespace SocialMediaApp.Controllers
 {
@@ -22,7 +23,11 @@ namespace SocialMediaApp.Controllers
 			var result = await _context.Authors.Select(a => new AuthorViewModel
 			{
 				Id = a.Id,
-				Name = a.Name
+				UserName = a.UserName,
+				Email = a.Email,
+				Bio = a.Bio,
+				ProfilePicture = a.ProfilePicture
+
 			}).ToListAsync();
 
 			return Ok(result);
@@ -42,11 +47,16 @@ namespace SocialMediaApp.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> Create([FromBody] AuthorViewModel model)
+		public async Task<ActionResult> Create([FromBody] CreateAuthorViewModel model)
 		{
 			var newAuthor = new Author
 			{
-				Name = model.Name
+				UserName = model.UserName,
+				Email = model.Email,
+				// TODO: handle null possibility
+				Password = AuthController.ComputeSha256Hash(model.Password),
+				Bio = model.Bio,
+				ProfilePicture = model.ProfilePicture
 			};
 
 			_context.Authors.Add(newAuthor);

@@ -2,8 +2,8 @@
 {
     public class CommentViewModel
     {
-        public string Content { get; set; }
-        public string AuthorName { get; set; }
+        public required string Content { get; set; }
+        public required string CommenterName { get; set; }
 
     }
 }

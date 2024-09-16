@@ -1,13 +1,15 @@
-using static System.Net.Mime.MediaTypeNames;
-
 namespace SocialMediaApp.Models
 {
 	public class Author
 	{
 		public int Id { get; set; }
-		public string Name { get; set; }
+		public required string UserName { get; set; }
+		public required string Password { get; set; }
+		public string? Email { get; set; }
+		public string? Bio { get; set; }
+		public byte[]? ProfilePicture { get; set; }
+		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 		public List<Post> Posts { get; set; } = new List<Post>();
-		public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 
 }

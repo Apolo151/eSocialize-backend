@@ -1,9 +1,9 @@
 namespace SocialMediaApp.ViewModels
 {
-    public class EditCommentViewModel
+    public class ReplyViewModel
     {
-        public int Id { get; set; }
         public required string Content { get; set; }
+        public required string ReplierName { get; set; }
 
     }
 }

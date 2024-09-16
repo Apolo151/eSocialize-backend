@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SocialMediaApp;
@@ -11,9 +12,11 @@ using SocialMediaApp;
 namespace SocialMediaApp.Migrations
 {
     [DbContext(typeof(SocialMediaContext))]
-    partial class SocialMediaContextModelSnapshot : ModelSnapshot
+    [Migration("20240915212011_extra_models_fields")]
+    partial class extra_models_fields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,40 +149,10 @@ namespace SocialMediaApp.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("SocialMediaApp.Models.Reply", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("ReplierId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentId");
-
-                    b.HasIndex("ReplierId");
-
-                    b.ToTable("Replies");
-                });
-
             modelBuilder.Entity("SocialMediaApp.Models.Comment", b =>
                 {
                     b.HasOne("SocialMediaApp.Models.Author", "Commenter")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("CommenterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -225,33 +198,11 @@ namespace SocialMediaApp.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("SocialMediaApp.Models.Reply", b =>
-                {
-                    b.HasOne("SocialMediaApp.Models.Comment", "Comment")
-                        .WithMany("Replies")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SocialMediaApp.Models.Author", "Replier")
-                        .WithMany()
-                        .HasForeignKey("ReplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Comment");
-
-                    b.Navigation("Replier");
-                });
-
             modelBuilder.Entity("SocialMediaApp.Models.Author", b =>
                 {
-                    b.Navigation("Posts");
-                });
+                    b.Navigation("Comments");
 
-            modelBuilder.Entity("SocialMediaApp.Models.Comment", b =>
-                {
-                    b.Navigation("Replies");
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("SocialMediaApp.Models.Post", b =>
