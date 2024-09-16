@@ -1,8 +1,16 @@
-Make sure to update the db connection in the `appsettings.json` file :)
+# eSocialize
 
-# Setup
+eSocialize is a social media app.
 
-## Local Setup
+## Members
+
+
+
+## Setup
+
+> Make sure to update the db connection in the `appsettings.json` file
+
+### Local Setup
 
 - install and setup [.NET 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
@@ -13,12 +21,19 @@ dotnet ef database update
 ```
 
 - run app
+
 ```bash
 dotnet run
 ```
 
-## Using Docker
+### Using Docker
+- make sure you have docker installed
 
+- run docker compose
+
+```bash
+docker compose up
+```
 
 ## Git Practices
 - all branches should be in the format: \<feature\>-\<username\>
