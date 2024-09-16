@@ -45,7 +45,10 @@ namespace SocialMediaApp.Controllers
             if (user == null)
             {
                 _logger.LogWarning("User not found: {Username}", request.Username);
-                return NotFound("User not found");
+                return NotFound(new {
+                    success = false,
+                    message = "User not found"
+                });
             }
 
             // Use a proper hashing algorithm for password comparison
@@ -53,7 +56,10 @@ namespace SocialMediaApp.Controllers
             if (user.Password != hashedPassword)
             {
                 _logger.LogWarning("Invalid password for user: {Username}", request.Username);
-                return Unauthorized("Invalid password");
+                return Unauthorized(new {
+                    success = false,
+                    message = "Invalid password"
+                });
             }
 
             _logger.LogInformation("User authenticated: {Username}", request.Username);
@@ -73,7 +79,10 @@ namespace SocialMediaApp.Controllers
             };
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             var accessToken = tokenHandler.WriteToken(securityToken);
-            return Ok(accessToken);
+            return Ok(new {
+                success = true,
+                accessToken
+            });
         }
     }
 }

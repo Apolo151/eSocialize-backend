@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Models;
 using SocialMediaApp.ViewModels;
 using SocialMediaApp.Controllers;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace SocialMediaApp.Controllers
 {

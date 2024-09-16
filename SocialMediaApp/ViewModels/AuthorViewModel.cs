@@ -7,5 +7,6 @@
         public string? Email { get; set; }
         public string? Bio { get; set; }
         public byte[]? ProfilePicture { get; set; }
+        public List<int>? Followings { get; set; }
     }
 }
