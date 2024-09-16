@@ -20,9 +20,8 @@ namespace SocialMediaApp.Controllers
 
         // Following
 		[Authorize]
-		[HttpPost("Followings")]
-
-		public async Task<ActionResult> Follow([FromBody] Follow model)
+		[HttpPost]
+		public async Task<ActionResult> Follow([FromBody] CreateFollowViewModel model)
 		{
 			var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
@@ -50,7 +49,7 @@ namespace SocialMediaApp.Controllers
 		}
 
 		[Authorize]
-		[HttpGet("Followings")]
+		[HttpGet]
 		public async Task<ActionResult<List<AuthorViewModel>>> GetFollowings()
 		{
 			var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -60,7 +59,7 @@ namespace SocialMediaApp.Controllers
 				return Unauthorized("Invalid Token");
 			}
 
-			// get all Follow where FollowerId == userId
+			// get all Follows where FollowerId == userId
             var result = await _context.Follows
                 .Where(f => f.FollowerId == int.Parse(userId))
                 .Select(f => new AuthorViewModel
@@ -77,8 +76,8 @@ namespace SocialMediaApp.Controllers
 		}
 
 		[Authorize]
-		[HttpDelete("Followings")]
-		public async Task<ActionResult> Unfollow([FromBody] FollowViewModel model)
+		[HttpDelete]
+		public async Task<ActionResult> Unfollow([FromBody] CreateFollowViewModel model)
 		{
 			var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 

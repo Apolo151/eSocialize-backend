@@ -10,7 +10,7 @@ namespace SocialMediaApp.Models
 		public required string Password { get; set; }
 		public string? Email { get; set; }
 		public string? Bio { get; set; }
-		public byte[]? ProfilePicture { get; set; }
+		public string? ProfilePicture { get; set; }
 		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 		public List<Post> Posts { get; set; } = new List<Post>();
 

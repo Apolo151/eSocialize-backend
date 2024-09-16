@@ -66,5 +66,39 @@ namespace SocialMediaApp.Controllers
 
 			return Ok();
 		}
+
+		[Authorize]
+		[HttpPut("{Id}")]
+		public async Task<ActionResult> Update([FromRoute] int Id, [FromBody] UpdateAuthorViewModel model)
+		{
+			var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized("Invalid Token");
+            }
+
+			var author = await _context.Authors.Where(a => a.Id == Id).FirstOrDefaultAsync();
+
+			if(author == null)
+			{
+				return NotFound("Author not found");
+			}
+
+			if(author.Id != int.Parse(userId))
+			{
+				return Unauthorized("You are not authorized to update another author");
+			}
+
+			author.UserName = model.UserName;
+			author.Password = AuthController.ComputeSha256Hash(model.Password);
+			author.Email = model.Email;
+			author.Bio = model.Bio;
+			author.ProfilePicture = model.ProfilePicture;
+
+			await _context.SaveChangesAsync();
+
+			return Ok();
+		}
 	}
 }
