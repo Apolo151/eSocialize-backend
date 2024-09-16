@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SocialMediaApp;
@@ -11,9 +12,11 @@ using SocialMediaApp;
 namespace SocialMediaApp.Migrations
 {
     [DbContext(typeof(SocialMediaContext))]
-    partial class SocialMediaContextModelSnapshot : ModelSnapshot
+    [Migration("20240916170927_updateFollows")]
+    partial class updateFollows
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace SocialMediaApp.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Bio")
                         .HasColumnType("text");
@@ -51,6 +57,8 @@ namespace SocialMediaApp.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Authors");
                 });
@@ -83,32 +91,6 @@ namespace SocialMediaApp.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("SocialMediaApp.Models.Follow", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("FolloweeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("FollowerId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FolloweeId");
-
-                    b.HasIndex("FollowerId");
-
-                    b.ToTable("Follows");
                 });
 
             modelBuilder.Entity("SocialMediaApp.Models.Like", b =>
@@ -202,25 +184,11 @@ namespace SocialMediaApp.Migrations
                     b.ToTable("Replies");
                 });
 
-            modelBuilder.Entity("SocialMediaApp.ViewModels.FollowViewModel", b =>
+            modelBuilder.Entity("SocialMediaApp.Models.Author", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AuthorId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("FolloweeId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.ToTable("FollowViewModel");
+                    b.HasOne("SocialMediaApp.Models.Author", null)
+                        .WithMany("Followings")
+                        .HasForeignKey("AuthorId");
                 });
 
             modelBuilder.Entity("SocialMediaApp.Models.Comment", b =>
@@ -240,25 +208,6 @@ namespace SocialMediaApp.Migrations
                     b.Navigation("Commenter");
 
                     b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("SocialMediaApp.Models.Follow", b =>
-                {
-                    b.HasOne("SocialMediaApp.Models.Author", "Followee")
-                        .WithMany()
-                        .HasForeignKey("FolloweeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SocialMediaApp.Models.Author", "Follower")
-                        .WithMany()
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Followee");
-
-                    b.Navigation("Follower");
                 });
 
             modelBuilder.Entity("SocialMediaApp.Models.Like", b =>
@@ -308,13 +257,6 @@ namespace SocialMediaApp.Migrations
                     b.Navigation("Comment");
 
                     b.Navigation("Replier");
-                });
-
-            modelBuilder.Entity("SocialMediaApp.ViewModels.FollowViewModel", b =>
-                {
-                    b.HasOne("SocialMediaApp.Models.Author", null)
-                        .WithMany("Followings")
-                        .HasForeignKey("AuthorId");
                 });
 
             modelBuilder.Entity("SocialMediaApp.Models.Author", b =>
