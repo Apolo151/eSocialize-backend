@@ -10,7 +10,6 @@ namespace SocialMediaApp.Models
 		public byte[]? ProfilePicture { get; set; }
 		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 		public List<Post> Posts { get; set; } = new List<Post>();
-		public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 
 }

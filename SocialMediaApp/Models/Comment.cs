@@ -11,5 +11,7 @@ namespace SocialMediaApp.Models
         public Author? Commenter { get; set; }
 		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+		public List<Reply>? Replies { get; set; }
+
     }
 }
