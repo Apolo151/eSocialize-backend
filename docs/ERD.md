@@ -4,7 +4,7 @@ erDiagram
     AUTHORS {
       int ID PK
       string Bio
-      binary profile_picture
+      byte[] profile_picture
       string Username
       string Email
       string Password
@@ -14,17 +14,18 @@ erDiagram
     
     POSTS {
       int ID PK
-      int UserID FK
-      post_status status
-      binary image
+      int AuthorID FK
+      string Title
       string Content
+      post_status status
+      byte[] image
       datetime CreatedAt
     }
     
     COMMENTS {
       int ID PK
       int PostID FK
-      int UserID FK
+      int CommenterID FK
       string Content
       datetime CreatedAt
     }
@@ -32,6 +33,7 @@ erDiagram
     REPLIES {
       int ID PK
       int CommentID FK
+      int ReplierID FK
       string Content
       datetime CreatedAt
     }
@@ -44,7 +46,7 @@ erDiagram
     
     LIKES {
       int ID PK
-      int UserID FK
+      int LikerID FK
       int PostID FK
       datetime CreatedAt
     }
@@ -55,20 +57,8 @@ erDiagram
     POSTS ||--o{ COMMENTS: "has"
     AUTHORS ||--o{ COMMENTS: "makes"
     AUTHORS ||--o{ LIKES: "likes"
+    AUTHORS ||--o{ REPLIES: "replies"
     POSTS ||--o{ LIKES: "liked_by"
     AUTHORS ||--o{ FRIENDSHIPS: "is a friend of"
     COMMENTS ||--o{ REPLIES: "has"
 ```
-
-<!--     <!-- GROUPS {
-      int ID PK
-      string GroupName
-      string Description
-      datetime CreatedAt
-    }
-
-    GROUP_MEMBERS {
-      int GroupID FK
-      int UserID FK
-      datetime JoinedAt
-    } --> -->
