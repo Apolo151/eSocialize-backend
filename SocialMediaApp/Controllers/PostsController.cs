@@ -1,3 +1,5 @@
+using System.Net;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -70,11 +72,18 @@ namespace SocialMediaApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreatePostViewModel model)
         {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized("Invalid Token");
+            }
+
             var newPost = new Post
             {
                 Title = model.Title,
                 Content = model.Content,
-                AuthorId = model.AuthorId
+                AuthorId = int.Parse(userId)
             };
 
             _context.Posts.Add(newPost);
